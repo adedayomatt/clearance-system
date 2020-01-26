@@ -2,10 +2,14 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Student extends Model
+class Student extends Authenticatable
 {
+    use Notifiable;
+
     protected $guarded = ['id'];
 
     public function prospect(){
@@ -13,6 +17,6 @@ class Student extends Model
     }
 
     public function clearance(){
-        return $this->hasmany('App\Clearance', 'matric');
+        return $this->hasMany('App\Clearance');
     }
 }
