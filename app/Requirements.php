@@ -11,5 +11,9 @@ class Requirements extends Model
     public function clearance_stage(){
         return $this->belongsTo('App\ClearanceStage');
     }
-    
+
+    public function clearance_stages(){
+        return $this->belongsToMany('App\ClearanceStage');
+    }
+
 }

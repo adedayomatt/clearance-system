@@ -25,7 +25,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    // protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -40,4 +40,13 @@ class LoginController extends Controller
     public function username(){
         return 'matric';
     }
+
+    public function showLoginForm(){
+        return view('student.login');
+    }
+
+    public function redirectTo(){
+        return route('student.index');
+    }
+
 }

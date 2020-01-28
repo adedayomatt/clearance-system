@@ -15,4 +15,8 @@ class ClearanceStage extends Model
     public function clearance(){
         return $this->hasMany('App\Clearance');
     }
+
+    public function stage_requirements(){
+        return $this->belongsToMany('App\Requirement');
+    }
 }
