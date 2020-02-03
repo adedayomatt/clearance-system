@@ -9,20 +9,26 @@
 
     <title>UI Online Clearance System</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        body{
+            margin: 0;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-image: url({{asset('image/uniibadan.jpg')}})
+        }
+    </style>
     @yield('style')
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+        <nav class="navbar navbar-expand-md navbar-light fixed-top navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ route('home') }}">
                     <img src="{{asset('image/ui-brand.jpg')}}" alt="University of Ibadan" style="height: 50px">
@@ -35,15 +41,38 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         @auth('admin')
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.prospects') }}">Prospects</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.clearance.stages') }}">Clearance stages</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.clearances') }}">Clearances</a>
-                            </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="nav-bar-prospects-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-th-list theme-color"></i> Prospects <sup class="badge badge-secondary">{{\App\Prospect::all()->count()}}</sup>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="nav-bar-categories-dropdown" >
+                                <a class="dropdown-item theme-color" href="{{ route('admin.prospects.import.initiate') }}"><i class="fa fa-plus"></i> Import prospects</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item theme-color" href="{{ route('admin.prospects') }}"><i class="fa fa-plus"></i> All prospects</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="nav-bar-prospects-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-th-list theme-color"></i> Clearance stages <sup class="badge badge-secondary">{{\App\ClearanceStage::all()->count()}}</sup>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="nav-bar-categories-dropdown" >
+                                <a class="dropdown-item theme-color" href="{{ route('admin.clearance.stage.create') }}"><i class="fa fa-plus"></i> New clearance stage</a>
+                                <div class="dropdown-divider"></div>
+                                @foreach (\App\ClearanceStage::all() as $stage)
+                                    <div class="dropdown-item theme-color" >
+                                        <a href="{{ route('clearance.stage.show', $stage->id) }}">{{$stage->name}}</a>
+                                       <div>
+                                           <small>{{$stage->requirements->count()}} requirements</small>
+                                       </div>
+                                    </div>
+                                    <div class="dropdown-divider"></div>
+                                @endforeach
+                                <a class="dropdown-item theme-color" href="{{ route('admin.clearance.stages') }}"><i class="fa fa-plus"></i> All clearance stages</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.clearances') }}">Clearances</a>
+                        </li>
 
                         @endauth
 
@@ -58,10 +87,12 @@
                         @auth('web')
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::guard('web')->user()->matric }} <span class="caret"></span>
+                                    <img src="{{Auth::guard('web')->user()->avatar}}" alt="{{Auth::guard('web')->user()->matric}}'s passport" style="width: 40px; height: 40px; border-radius: 50%"> {{ Auth::guard('web')->user()->matric }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{route('home')}}">My clearance</a>
+                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
@@ -104,9 +135,13 @@
             </div>
         </nav>
 
-        <main>
+        <main style="padding-top: 80px">
             @yield('content')
         </main>
     </div>
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{asset('js/image-preview.js')}}"></script>
+        
 </body>
 </html>

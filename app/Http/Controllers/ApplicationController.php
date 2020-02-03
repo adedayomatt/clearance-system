@@ -9,10 +9,7 @@ class ApplicationController extends Controller
 {
     public function home(){
         if(Auth::check('web')){
-            return view('student.index');
-        }
-        elseif(Auth::check('admin')){
-            return view('admin.index');
+            return view('home')->with('student', Auth::guard('web')->user());
         }else{
             return view('home');
         }

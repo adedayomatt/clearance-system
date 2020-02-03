@@ -19,6 +19,9 @@ class CreateStudentsTable extends Migration
             $table->bigInteger('matric')->unique();
             $table->string('email')->unique();;
             $table->string('password');
+            $table->string('passport');
+            $table->string('school_id_front');
+            $table->string('school_id_back');
             $table->rememberToken();
             $table->timestamps();
 

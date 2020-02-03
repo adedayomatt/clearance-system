@@ -2,61 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Prospect;
+use Auth;
 use App\Student;
+use App\Clearance;
+use App\Requirement;
 use Illuminate\Http\Request;
+use App\Http\Traits\FileUpload;
 
 class StudentController extends Controller
 {
-    private function matricEligible($matric){
-        $prospect = Prospect::find($matric);
-        return $prospect == null ? false : $prospect;
+    use FileUpload;
+
+    public function index(){
+        return view('student.show')->with('student', Auth::guard('web')->user());
     }
 
-    public function checkMatric(){
-        return view('student.check-matric');
-    }
-
-    public function confirmMatric(Request $request){
+    public function uploadRequirement(Request $request, $id){
+        $requirement = Requirement::findorfail($id);
+        $student = Auth::guard('web')->user();
         $this->validate($request, [
-            'matric_number' => ['required']
+            'file' => ['required', 'mimes:jpeg,jpg,JPG,png,pdf']
         ]);
+        $upload = $this->upload('file', $as = str_slug($student->matric.' '.$requirement->title), $to = 'clearance', $accept = ['jpeg', 'jpg', 'JPG', 'png', 'pdf']);
+        $existing_clearance = Clearance::where('requirement_id', $requirement->id)->where('student_id', $student->id)->first();
+        $clearance = $existing_clearance == null ? new Clearance : $existing_clearance;
+        $clearance->requirement_id = $requirement->id;
+        $clearance->student_id = $student->id;
+        $clearance->upload = $upload['filename'];
+        $clearance->created_at = now();
+        $clearance->save();
 
-        $prospect = $this->matricEligible($request->matric_number);
-        if(!$prospect){
-            return redirect()->back()->with('error', 'The matric number is not eligible for clearance');
-        }
-        return view('student.check-matric')->with('prospect', $prospect);
+        return redirect()->back()->with('success', $requirement->title.' uploaded successfully, it is pending for approval');
     }
 
-    public function startClearance($matric){
-        $prospect = $this->matricEligible($matric);
-        if(!$prospect){
-            return redirect()->route('student.matric.check')->with('error', 'The matric number is not eligible for clearance at the moment');
-        }
-        return view('student.start-clearance')->with('prospect', $prospect);
+    public function show($matric){
+        $student = Student::where('matric', $matric)->firstorfail();
+        return view('student.show')->with('student', $student);
     }
 
-    public function registerClearance($matric){
-        $prospect = $this->matricEligible($matric);
-        if(!$prospect){
-            return redirect()->route('student.matric.check')->with('error', 'The matric number is not eligible for clearance at the moment');
-        }
-        if($prospect->clearance_registered()){
-            return redirect()->route('login')->with('success', 'You can now login to start your clearance');
-        }
-
-        $this->validate($request, [
-            'password' => ['required', 'confirmed']
-        ]);
-
-        $student = Student::create([
-            'matric' => $prospect->matric,
-            'email' => $prospect->email,
-            'password' => $request->password
-        ]);
-
-        return redirect()->route('login')->with('success', 'You can now login to start your clearance');
-    }
-
+    
 }

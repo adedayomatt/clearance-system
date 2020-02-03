@@ -5,11 +5,11 @@
     <div class="row justify-content-center">
         <div class="col-sm-8 col-md-4">
             @include('layouts.components.session')
-            <div class="text-center">
-                <h4>Login</h4>
-            </div>
             <div class="card">
                 <div class="card-body">
+                    <div class="text-center">
+                        <h4>Login</h4>
+                    </div>        
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="form-group">

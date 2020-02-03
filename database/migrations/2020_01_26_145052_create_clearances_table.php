@@ -19,7 +19,10 @@ class CreateClearancesTable extends Migration
             $table->bigInteger('requirement_id')->unsigned();
             $table->string('upload')->nullable();
             $table->mediumText('note')->nullable();
-            
+            $table->timestamp('approved_at')->nullable();
+            $table->timestamp('rejected_at')->nullable();
+            $table->timestamps();
+
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->foreign('requirement_id')->references('id')->on('requirements')->onDelete('cascade');
         });

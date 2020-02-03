@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Requirement;
+use App\ClearanceStage;
 use Illuminate\Http\Request;
 
 class RequirementController extends Controller
@@ -21,9 +23,11 @@ class RequirementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($stage_id)
     {
-        //
+        $stage = ClearanceStage::findorfail($stage_id);
+
+        return view('requirement.create')->with('stage', $stage);
     }
 
     /**
@@ -32,9 +36,23 @@ class RequirementController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $stage_id)
     {
-        //
+        $stage = ClearanceStage::findorfail($stage_id);
+
+        $this->validate($request, [
+            'title' => ['required'],
+            'instructions' => ['required']
+        ]);
+        
+        $requirement = Requirement::create([
+            'clearance_stage_id' => $stage->id,
+            'title' => $request->title,
+            'instructions' => $request->instructions,
+            'file_upload' => $request->has('file_upload') ? true : false
+        ]);
+
+        return redirect()->route('clearance.stage.show', $stage->id)->with('success', 'New requirement added to clearance stage');
     }
 
     /**
@@ -56,7 +74,9 @@ class RequirementController extends Controller
      */
     public function edit($id)
     {
-        //
+        $requirement = Requirement::findorfail($id);
+        
+        return view('requirement.edit')->with('requirement', $requirement);
     }
 
     /**
@@ -68,7 +88,18 @@ class RequirementController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $requirement = Requirement::findorfail($id);
+        $this->validate($request, [
+            'title' => ['required'],
+            'instructions' => ['required']
+        ]);
+
+        $requirement->title = $request->title;
+        $requirement->instructions = $request->instructions;
+        $requirement->file_upload = $request->has('file_upload') ? true :false;
+        $requirement->save();
+
+        return redirect()->route('clearance.stage.show', $requirement->clearance_stage->id)->with('success', $requirement->title.' requirement updated');
     }
 
     /**
@@ -79,6 +110,10 @@ class RequirementController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $requirement = Requirement::findorfail($id);
+        
+        $requirement->delete();
+
+        return redirect()->route('clearance.stage.show', $requiremnet->clearance_stage->id)->with('success', $requirement->title.' requirement removed');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Clearance;
 use Illuminate\Http\Request;
 
 class ClearanceController extends Controller
@@ -13,7 +14,29 @@ class ClearanceController extends Controller
      */
     public function index()
     {
-        //
+        $clearances = Clearance::where('approved_at', null)->get();
+        return view('clearance.index')->with('clearances', $clearances);
+    }
+
+    public function approveClearance($id){
+        $clearance = Clearance::findorfail($id);
+
+        $clearance->approved_at = now();
+        $clearance->rejected_at = null;
+        $clearance->save();
+
+        return redirect()->back()->with('success', 'Clearance approved');
+    }
+
+    public function rejectClearance($id){
+        $clearance = Clearance::findorfail($id);
+
+        $clearance->approved_at = null;
+        $clearance->rejected_at = now();
+
+        $clearance->save();
+        
+        return redirect()->back()->with('success', 'Clearance rejected');
     }
 
     /**
@@ -45,7 +68,8 @@ class ClearanceController extends Controller
      */
     public function show($id)
     {
-        //
+        $clearance = Clearance::findorfail($id);
+        return view('clearance.show')->with('clearance', $clearance);
     }
 
     /**
