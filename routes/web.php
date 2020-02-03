@@ -62,6 +62,7 @@ Route::group(['middleware' => 'auth:web', 'prefix' => 'clearance'], function(){
     Route::get('/', 'StudentController@index')->name('student.index');
     Route::get('{id}', 'ClearanceController@show')->name('clearance.show');
     Route::post('requirement/{id}/upload', 'StudentController@uploadRequirement')->name('requirement.upload');
+    Route::post('certificate', 'StudentController@printCertificate')->name('student.clearance.certificate');
     
 });
 

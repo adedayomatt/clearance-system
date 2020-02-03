@@ -67,7 +67,7 @@
                                     <div class="alert alert-danger">
                                         You'll be able to print your clearance certificate when you submit all documents and are approved
                                     </div>
-                                    <button class="btn btn-primary btn-block disabled" type="button">Print Certificate</button>
+                                    <button class="btn btn-primary btn-block disabled" type="button">Print Clearance</button>
                                 @endif
 
                             @endauth
