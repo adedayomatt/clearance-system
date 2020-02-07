@@ -47,14 +47,14 @@
                             @endif
                             
                         </div>
-                        <div class="col-sm-6 col-md-4">
+                        <div class="col-sm-6 col-md-3">
                             <form action="{{route('student.matric.confirm')}}" method="post">
                                 @csrf
                                 <div class="form-group">
                                     <div class="text-center">
                                         <label for="">Confirm if you are eligible for clearance </label>
                                     </div>
-                                <input type="text" name="matric_number" class="form-control" placeholder="Matric number" value="{{old('matric_number')}}">
+                                <input type="text" name="matric_number" class="form-control" placeholder="Matric number" value="{{old('matric_number')}}" required>
                                 </div>
             
                                 <div class="form-group py-3 text-center">

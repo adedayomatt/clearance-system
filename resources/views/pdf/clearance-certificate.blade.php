@@ -11,7 +11,7 @@
                 border: 1px solid #f7f7f7;
                 border-collapse: collapse;
             }
-            td{
+            td, th{
                 padding: 5px;
                 border: 1px solid #f7f7f7
             }

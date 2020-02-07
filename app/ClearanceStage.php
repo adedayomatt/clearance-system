@@ -2,6 +2,8 @@
 
 namespace App;
 
+use DB;
+use App\ClearanceStage;
 use Illuminate\Database\Eloquent\Model;
 
 class ClearanceStage extends Model
@@ -12,9 +14,29 @@ class ClearanceStage extends Model
         return $this->hasMany('App\Requirement');
     }
 
-
     public function stage_requirements(){
-        return $this->belongsToMany('App\Requirement');
+        $secondary = DB::table('clearance_stage_requirement')->where('secondary_stage_id', $this->id)->pluck('primary_stage_id')->toArray();
+        return ClearanceStage::whereIn('id', $secondary)->get();
+    }
+
+    public function attach_stages($stages = []){
+        DB::table('clearance_stage_requirement')->where('secondary_stage_id', $this->id)->delete();
+       if($stages){
+            foreach ($stages as $stage) {
+                DB::table('clearance_stage_requirement')->insert([
+                    'primary_stage_id' => $stage,
+                    'secondary_stage_id' => $this->id
+                ]);
+            }
+       }
+    }
+
+    public function primary_stage(){
+        $primary = [];
+        foreach ($this->stage_requirements() as $stage) {
+            array_push($primary, $stage->id);
+        }
+        return $primary;
     }
 
     public function clearances($student_id = null){

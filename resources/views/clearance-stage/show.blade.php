@@ -10,6 +10,14 @@
                         <span class="text-muted">Clearance stage</span>
                         <h4>{{$stage->name}}</h4>
                         <p>{{$stage->description}}</p>
+                        @if ($stage->stage_requirements()->count() > 0)
+                            Must have completed stages: 
+                            @foreach($stage->stage_requirements() as $stg)
+                                <a href="{{route('clearance.stage.show', $stg->id)}}">{{$stg->name}}</a>
+                                {{!$stg->last ? ', ': ''}}
+                            @endforeach
+                        @endif
+                        
                        @auth('web')
                             @php
                                 $student = Auth::guard('web')->user()
@@ -40,17 +48,49 @@
                     </div>
                     <hr>
                     <div class="card-body">
-                        @if($stage->requirements->count() > 0)
-                            @foreach ($stage->requirements as $requirement)
+                        @php
+                            $stage_requirements_passed = true; 
+                        @endphp
+                       
+                        @if ($stage->stage_requirements()->count() > 0)
+                            <h5>Stages</h5>
+                            @foreach ($stage->stage_requirements() as $stage)
                                 <div class="my-1">
-                                    @include('widgets.requirement')
+                                    @include('widgets.clearance-stage')
                                 </div>
+                                @auth('web')
+                                    @if ($stage->submission_progress(Auth::guard('web')->user()->id) < 100)
+                                        @php
+                                            $stage_requirements_passed = false;
+                                        @endphp
+                                    @endif
+                                @endauth
                             @endforeach
+                            
+                            <hr>
+
+                        @endif
+                        
+
+                        @if ($stage_requirements_passed)
+                            @if($stage->requirements->count() > 0)
+                                @foreach ($stage->requirements as $requirement)
+                                    <div class="my-1">
+                                        @include('widgets.requirement')
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="alert alert-danger">
+                                    No requirement set yet
+                                </div>
+                            @endif
                         @else
                             <div class="alert alert-danger">
-                                No requirement set yet
+                                You must complete the stage requirements before continuing to this stage
                             </div>
                         @endif
+                        
+
                     </div>
                 </div>
             </div>

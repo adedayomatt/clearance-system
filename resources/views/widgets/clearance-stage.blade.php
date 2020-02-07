@@ -4,6 +4,13 @@
         <p>{{$stage->description}}</p>
         <hr>
         <p><span style="font-size: 150%" class="text-primary">{{number_format($stage->requirements->count())}}</span> requirements</p>
+        @if ($stage->stage_requirements()->count() > 0)
+            Must have completed stages: 
+            @foreach($stage->stage_requirements() as $stg)
+                <a href="{{route('clearance.stage.show', $stg->id)}}">{{$stg->name}}</a>
+                {{!$stg->last ? ', ': ''}}
+            @endforeach
+        @endif
         @if (isset($student))
             <div>
                 <strong class="d-block">Submission</strong>

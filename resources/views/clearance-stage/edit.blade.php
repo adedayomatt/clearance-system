@@ -19,6 +19,21 @@
                                 <textarea name="description" class="form-control" placeholder="stage description">{{$stage->description}}</textarea>
                             </div>
                             <div class="form-group">
+                                <label for="">Pre-requisite stages</label>
+                                @php
+                                    $stages = \App\ClearanceStage::where('id', '!=', $stage->id)->get();
+                                @endphp
+                                <div>
+                                    @if ($stages->count() > 0)
+                                        @foreach ($stages as $s)
+                                            <label for="" class="m-2"><input type="checkbox" name="pre_requisite[]" value="{{$s->id}}" {{in_array($s->id, $stage->primary_stage()) ? 'checked' : '' }}> {{$s->name}}</label>
+                                        @endforeach
+                                    @else
+                                        <div class="alert alert-danger">No other stages</div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <button type="submit" class="btn btn-block btn-primary">update stage</button>
                             </div>
                         </form>

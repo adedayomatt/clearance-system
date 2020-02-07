@@ -47,6 +47,8 @@ class ClearanceStageController extends Controller
             'description' => $request->description,
         ]);
 
+        $stage->attach_stages($request->pre_requisite);
+
         return redirect()->route('clearance.stage.show', $stage->id)->with('success', 'Clearance stage create. Now add requirements for this <strong>'.$stage->name.'<strong>');
     }
 
@@ -60,6 +62,7 @@ class ClearanceStageController extends Controller
     {
         $stage = ClearanceStage::findorfail($id);
 
+        // dd($stage->stage_requirements());
         return view('clearance-stage.show')->with('stage', $stage);
     }
 
@@ -95,6 +98,8 @@ class ClearanceStageController extends Controller
         $stage->name = $request->name;
         $stage->description = $request->description;
         $stage->save();
+
+        $stage->attach_stages($request->pre_requisite);
 
         return redirect()->route('clearance.stage.show', $stage->id)->with('success', 'Clearance stage updated');
     }

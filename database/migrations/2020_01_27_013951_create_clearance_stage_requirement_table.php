@@ -15,12 +15,12 @@ class CreateClearanceStageRequirementTable extends Migration
     {
         Schema::create('clearance_stage_requirement', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('clearance_stage_id')->unsigned();
-            $table->bigInteger('requirement_id')->unsigned();
+            $table->bigInteger('primary_stage_id')->unsigned();
+            $table->bigInteger('secondary_stage_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('clearance_stage_id')->references('id')->on('clearance_stages')->onDelete('cascade');
-            $table->foreign('requirement_id')->references('id')->on('requirements')->onDelete('cascade');
+            $table->foreign('primary_stage_id')->references('id')->on('clearance_stages')->onDelete('cascade');
+            $table->foreign('secondary_stage_id')->references('id')->on('clearance_stages')->onDelete('cascade');
         });
     }
 

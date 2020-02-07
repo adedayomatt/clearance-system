@@ -24,7 +24,13 @@
                     @endif
                 @endif
                 <div class="d-flex">
-                    <a href="{{route('admin.clearance.show', $clearance->id)}}" class="btn btn-sm btn-primary mr-auto">view clearance</a>
+                    @auth('web')
+                        <a href="{{route('clearance.show', $clearance->id)}}" class="btn btn-sm btn-primary mr-auto">view clearance</a>
+                    @endauth
+
+                    @auth('admin')
+                        <a href="{{route('admin.clearance.show', $clearance->id)}}" class="btn btn-sm btn-primary mr-auto">view clearance</a>
+                    @endauth
                 </div>
 
             </div>
