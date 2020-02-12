@@ -49,7 +49,7 @@ class ClearanceStageController extends Controller
 
         $stage->attach_stages($request->pre_requisite);
 
-        return redirect()->route('clearance.stage.show', $stage->id)->with('success', 'Clearance stage create. Now add requirements for this <strong>'.$stage->name.'<strong>');
+        return redirect()->route('clearance.stage.show', $stage->id)->with('success', 'Clearance stage create. Now add requirements for this <strong>'.$stage->name.'</strong>');
     }
 
     /**

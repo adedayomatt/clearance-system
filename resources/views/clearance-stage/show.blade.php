@@ -4,7 +4,7 @@
     <div class="container-fluid py-2">
         <div class="row justify-content-center">
             <div class="col-md-3">
-                @include('layouts.components.session')
+                {{-- @include('layouts.components.session') --}}
                 <div class="card">
                     <div class="card-body">
                         <span class="text-muted">Clearance stage</span>
@@ -66,9 +66,7 @@
                                     @endif
                                 @endauth
                             @endforeach
-                            
                             <hr>
-
                         @endif
                         
 
@@ -89,8 +87,6 @@
                                 You must complete the stage requirements before continuing to this stage
                             </div>
                         @endif
-                        
-
                     </div>
                 </div>
             </div>
