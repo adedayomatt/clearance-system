@@ -21,7 +21,7 @@
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            background-image: url({{asset('image/uniibadan.jpg')}})
+            background-image: url({{asset('image/uni-ibadan.jpg')}})
         }
     </style>
     @yield('style')
