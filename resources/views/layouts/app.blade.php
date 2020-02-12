@@ -159,7 +159,7 @@
             </div>
         </nav>
 
-        <main style="padding-top: 80px">
+        <main style="padding-top: 70px">
             @yield('content')
         </main>
     </div>

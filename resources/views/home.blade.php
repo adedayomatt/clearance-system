@@ -25,7 +25,7 @@
 @endsection
 @section('content')
 <div class="front-banner">
-    <section class="container-fluid section-1">
+    <section class="container-fluid section-1" style="padding-top: 20px">
         <div class="row justify-content-center align-items-center">
             <div class="col-sm-8">
                 <div class="text-center">
@@ -37,7 +37,7 @@
                  <h4>Online Clearance System</h4>
                  <h4>For</h4>
                  <h1 class="text-primary">Graduating Students</h1>
-                 <div class="text-center">
+                 <div class="text-center py-5">
                      <a href="{{ route('student.matric.check') }}" class="btn btn-lg btn-primary">Get Started</a>
                  </div>
             </div>
