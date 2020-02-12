@@ -70,6 +70,27 @@
                                 <a class="dropdown-item theme-color" href="{{ route('admin.clearance.stages') }}"><i class="fa fa-plus"></i> All clearance stages</a>
                             </div>
                         </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="nav-bar-prospects-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-th-list theme-color"></i> Forms <sup class="badge badge-secondary">{{\App\Form::all()->count()}}</sup>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="nav-bar-categories-dropdown" >
+                                <a class="dropdown-item theme-color" href="{{ route('admin.form.create') }}"><i class="fa fa-plus"></i> New form</a>
+                                <div class="dropdown-divider"></div>
+                                @foreach (\App\Form::all() as $form)
+                                    <div class="dropdown-item theme-color" >
+                                        <a href="{{ route('form.show', $form->id) }}">{{$form->name}}</a>
+                                       <div>
+                                           <small>{{$form->form_fields->count()}} fields</small>
+                                       </div>
+                                    </div>
+                                    <div class="dropdown-divider"></div>
+                                @endforeach
+                                <a class="dropdown-item theme-color" href="{{ route('admin.forms') }}"><i class="fa fa-plus"></i> All forms</a>
+                            </div>
+                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.clearances') }}">Clearances</a>
                         </li>
@@ -140,8 +161,9 @@
         </main>
     </div>
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{asset('js/image-preview.js')}}"></script>
+    @yield('bottom-scripts')
         
 </body>
 </html>

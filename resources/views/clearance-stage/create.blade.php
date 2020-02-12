@@ -5,6 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <h4 class="text-center">New clearance stage</h4>
+                @include('layouts.components.session')
                 <div class="card">
                     <div class="card-body">
                         <form action="{{route('admin.clearance.stage.store')}}" method="post">
@@ -25,7 +26,7 @@
                                 <div>
                                     @if ($stages->count() > 0)
                                         @foreach ($stages as $stage)
-                                            <label for="" class="m-2"><input type="checkbox" name="pre_requisite[]"> {{$stage->name}}</label>
+                                            <label for="" class="m-2"><input type="checkbox" value="{{$stage->id}}" name="pre_requisite[]"> {{$stage->name}}</label>
                                         @endforeach
                                     @else
                                         <div class="alert alert-danger">No other stages</div>

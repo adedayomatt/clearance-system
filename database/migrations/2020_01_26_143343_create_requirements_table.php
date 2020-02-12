@@ -18,6 +18,7 @@ class CreateRequirementsTable extends Migration
             $table->bigInteger('clearance_stage_id')->unsigned();
             $table->string('title');
             $table->mediumText('instructions');
+            $table->bigInteger('form_id')->nullable();
             $table->boolean('file_upload')->default(false);
             $table->timestamps();
             

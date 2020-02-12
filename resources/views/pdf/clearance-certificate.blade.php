@@ -92,15 +92,17 @@
                     <thead>
                         <tr>
                             <th>Requirement</th>
+                            <th>Type</th>
                             <th>Submitted</th>
                             <th>Approved</th>
                         </tr>
                     </thead>
                     @foreach ($stage->requirements as $requirement)
                         <tr>
-                            <td style="width: 33%">{{$requirement->title}}</td>
-                            <td style="width: 33%">{{$requirement->student_clearance($student->id)->created_at->format('d F, Y h:i a')}}</td>
-                            <td style="width: 33%">{{$requirement->student_clearance($student->id)->approved_at->format('d F, Y h:i a')}}</td>
+                            <td style="width: 25%">{{$requirement->title}}</td>
+                            <td style="width: 25%">{{$requirement->type == 'form' ? 'Form' : 'Document'}}</td>
+                            <td style="width: 25%">{{$requirement->student_clearance($student->id)->created_at->format('d F, Y h:i a')}}</td>
+                            <td style="width: 25%">{{$requirement->student_clearance($student->id)->approved_at->format('d F, Y h:i a')}}</td>
                         </tr>
                     @endforeach
                 </table>

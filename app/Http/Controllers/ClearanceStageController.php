@@ -61,7 +61,6 @@ class ClearanceStageController extends Controller
     public function show($id)
     {
         $stage = ClearanceStage::findorfail($id);
-
         // dd($stage->stage_requirements());
         return view('clearance-stage.show')->with('stage', $stage);
     }

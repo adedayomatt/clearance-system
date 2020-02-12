@@ -43,7 +43,7 @@
                                 </div>
                             @else
                                 <div>
-                                    Status: <span class="badge badge-info">PENDING...</span>
+                                    Status: <span class="badge badge-warning">PENDING...</span>
                                 </div>
                             @endif
                         @endif
@@ -51,29 +51,58 @@
                 </div>
             </div>
             <div class="col-md-6">
-                @if ($requirement->file_upload)
-                    <h4 class="text-center">Uploaded document</h4>
-                    @if($clearance->upload !== null)
-                        <div class="text-center">
-                            <iframe src="{{$clearance->uploaded_file}}" frameborder="0" style="min-height: 80vh; width: 100%"></iframe>
-                        </div>                
-                    @else
-                        <div class="alert alert-danger">
-                            No file uploaded
-                        </div>
+                @if ($requirement->type == 'upload')
+                    @if ($requirement->file_upload)
+                        <h4 class="text-center">Uploaded document</h4>
+                        @if($clearance->upload !== null)
+                            <div class="text-center">
+                                <iframe src="{{$clearance->uploaded_file}}" frameborder="0" style="min-height: 80vh; width: 100%"></iframe>
+                            </div>                
+                        @else
+                            <div class="alert alert-danger">
+                                No file uploaded
+                            </div>
+                        @endif
                     @endif
+                @elseif($requirement->type == 'form')
+                    <h4 class="text-center">Form Submitted</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <th>Field</th>
+                                    <th>Value</th>
+                                </thead>
+                                <tbody>
+                                    @foreach ($clearance->form_responses() as $response)
+                                        <tr>
+                                            <td>
+                                                {{$response->form_field->label}}
+                                            </td>
+                                            <td>
+                                                {{$response->response}}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 @endif
             </div>
             <div class="col-md-3">
-                @if ($clearance->upload !== null)
                     <div class="card">
                         <div class="card-body">
                             @auth('web')
                                 @if (!$clearance->approved())
-                                    <button type="button" class="btn btn-sm btn-primary btn-block" data-toggle="collapse" data-target="#re-upload-req-{{$requirement->id}}">Re-upload {{$requirement->title}}</button>
-                                    <div class="mt-2 collapse" id="re-upload-req-{{$requirement->id}}">
-                                        @include('widgets.upload-requirement')
-                                    </div>                                        
+                                    @if ($clearance->requirement->type == 'upload')
+                                        <button type="button" class="btn btn-sm btn-primary btn-block" data-toggle="collapse" data-target="#re-upload-req-{{$requirement->id}}">Re-upload {{$requirement->title}}</button>
+                                        <div class="mt-2 collapse" id="re-upload-req-{{$requirement->id}}">
+                                            @include('widgets.upload-requirement')
+                                        </div>                                        
+                                    @elseif ($clearance->requirement->type == 'form')
+                                        <a href="{{route('requirement.form.show',[$clearance->requirement->id, $clearance->requirement->form->id] )}}" class="btn btn-primary btn-block">Edit form</a>
+                                    @endif
                                 @else
                                     <div class="alert alert-success">Clearance approved {{$clearance->approved_at->format('d F, Y h:i a')}}</div>    
                                 @endif
@@ -94,7 +123,6 @@
                         </div>
                     </div>
                
-                @endif
             </div>
         </div>
     </div>

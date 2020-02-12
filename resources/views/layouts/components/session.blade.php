@@ -3,7 +3,7 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">×</span>
         </button>
-        <b>Great! </b> {{session('status') }} 
+        <b>Great! </b> {!!session('status') !!} 
     </div>
 @endif
 
@@ -12,7 +12,7 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">×</span>
         </button>
-        {{session('success') }}
+        {!!session('success') !!}
     </div>
 @endif
 @if (session('error'))
@@ -20,7 +20,7 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">×</span>
         </button>
-        {{session('error') }}
+        {!!session('error') !!}
     </div>
 @endif
 
@@ -29,7 +29,7 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">×</span>
         </button>
-        {{session('warning') }} 
+        {!!session('warning') !!} 
     </div>
 @endif
 
@@ -38,7 +38,7 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">×</span>
         </button>
-        {{session('info') }}" 
+        {!!session('info') !!}
     </div>
 @endif
 
@@ -48,7 +48,7 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">×</span>
         </button>
-        <b>Oh Snap!</b> {{$error}} 
+        <b>Oh Snap!</b> {!!$error!!} 
     </div>
     @endforeach
 @endif

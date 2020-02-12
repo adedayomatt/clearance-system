@@ -47,6 +47,23 @@ Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin'], function(){
     Route::put('clearance/{id}/approve', 'ClearanceController@approveClearance')->name('admin.clearance.approve');
     Route::put('clearance/{id}/reject', 'ClearanceController@rejectClearance')->name('admin.clearance.reject');
 
+    Route::get('forms', 'FormController@index')->name('admin.forms');
+    Route::get('form/create', 'FormController@create')->name('admin.form.create');
+    Route::post('form/store', 'FormController@store')->name('admin.form.store');
+    Route::put('form/{id}/edit', 'FormController@edit')->name('admin.form.edit');
+    Route::delete('form/{id}/delete', 'FormController@delete')->name('admin.form.delete');
+
+    Route::get('form/{id}/field/create', 'FormFieldController@create')->name('admin.form.field.create');
+    Route::post('form/{id}/field/store', 'FormFieldController@store')->name('admin.form.field.store');
+    Route::get('field/{id}/edit', 'FormFieldController@edit')->name('admin.form.field.edit');
+    Route::put('field/{id}/update', 'FormFieldController@update')->name('admin.form.field.update');
+    Route::delete('field/{id}/delete', 'FormFieldController@delete')->name('admin.form.field.delete');
+
+});
+
+Route::group(['middleware' => 'admin-and-student'], function(){
+    Route::get('form/{form}', 'FormController@show')->name('form.show');
+    Route::get('requirement/{requirement}/form/{form}', 'FormController@requirementFormShow')->name('requirement.form.show');
 });
 
 
@@ -61,7 +78,10 @@ Route::post('{matric}/start', 'ClearanceAuthenticationController@registerClearan
 Route::group(['middleware' => 'auth:web', 'prefix' => 'clearance'], function(){
     Route::get('/', 'StudentController@index')->name('student.index');
     Route::get('{id}', 'ClearanceController@show')->name('clearance.show');
-    Route::post('requirement/{id}/upload', 'StudentController@uploadRequirement')->name('requirement.upload');
+
+    Route::post('stage/{stage}/form/{form}/submit', 'ClearanceController@submitForm')->name('form.submit');
+
+    Route::post('requirement/{id}/upload', 'ClearanceController@uploadRequirement')->name('requirement.upload');
     Route::post('certificate', 'StudentController@printCertificate')->name('student.clearance.certificate');
     
 });

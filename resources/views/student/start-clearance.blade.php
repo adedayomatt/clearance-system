@@ -29,7 +29,7 @@
                         <div class="form-group">
                             <div class="preview-image">
                                 <label for="">Passport</label>
-                                <div class="image-preview-container"></div>
+                                <div class="image-preview-container text-center"></div>
                                 <div class="small">Upload your most recent passport</div>
                                 <input type="file" name="passport" class="form-control {{ $errors->has('passport') ? ' is-invalid' : '' }}">
                             </div>
@@ -42,14 +42,14 @@
                             <div class="col-md-6">
                                 <div class="preview-image">
                                     <strong for="">Front</strong>
-                                    <div class="image-preview-container"></div>
+                                    <div class="image-preview-container text-center"></div>
                                     <input type="file" name="front_id_card" class="form-control {{ $errors->has('front_id_card') ? ' is-invalid' : '' }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="preview-image">
                                     <strong for="">Back</strong>
-                                    <div class="image-preview-container"></div>
+                                    <div class="image-preview-container text-center"></div>
                                     <input type="file" name="back_id_card"  class="form-control {{ $errors->has('back_id_card') ? ' is-invalid' : '' }}">
                                 </div>
                             </div>

@@ -5,6 +5,8 @@
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <h4 class="text-center">Edit clearance stage</h4>
+                @include('layouts.components.session')
+
                 <div class="card">
                     <div class="card-body">
                         <form action="{{route('admin.clearance.stage.update', $stage->id)}}" method="post">

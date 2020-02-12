@@ -19,7 +19,6 @@ function previewImages(form) {
     status.innerHTML = 'Select Images to upload';
     
     input.addEventListener('change', function(e){
-      alert('huraay!')
       images.innerHTML = ''; //clear previous preview (if any..);
       
        for(var i = 0; i<input.files.length; ++i){

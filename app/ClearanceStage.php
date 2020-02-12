@@ -55,7 +55,7 @@ class ClearanceStage extends Model
     public function submission_progress($student_id){
         $requirements = $this->requirements->count();
         $submited = $this->clearances($student_id)->count();
-        return ($submited/$requirements)*100;
+        return ($requirements == 0 || $submited == 0) ? 0 : ($submited/$requirements)*100;
     }
 
     public function approval_progress($student_id){
@@ -66,7 +66,7 @@ class ClearanceStage extends Model
                 $approved++;
             }
         }
-        return ($approved/$requirements)*100;
+        return ($requirements == 0 || $approved == 0) ? 0 : ($approved/$requirements)*100;
     }
 
     public function submissions(){

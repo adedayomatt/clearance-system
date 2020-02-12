@@ -3,12 +3,22 @@
         <div class="card-body">
             <h5>{{$requirement->title}}</h5>
             <p>{!!$requirement->instructions!!}</p>
-            <p>Requires file upload: {{$requirement->file_upload ? 'Yes' : 'No'}}</p>
+            <div>
+                @switch($requirement->type)
+                    @case('form')
+                        Type: Form, {{$requirement->form->name}} 
+                        @break
+                    @case('upload')
+                        Type: Document upload
+                        @break
+                    @default
+                        
+                @endswitch
+            </div>
             @auth('web')
                 @php
                     $clearance = $requirement->student_clearance(auth('web')->user()->id)
                 @endphp
-                @if ($requirement->file_upload)
                     @if ($clearance)
                         <div>
                             Submission: <span class="badge badge-success">SUBMITTED</span>, {{$clearance->created_at->format('d F, Y h:i a')}}, {{$clearance->created_at->diffForHumans()}}
@@ -34,14 +44,24 @@
 
                     @else
                         Submission: <span class="badge badge-danger">NOT SUBMITTED</span>
-                        <div class="mt-2">
-                            <button type="button" class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#upload-req-{{$requirement->id}}">Upload {{$requirement->title}}</button>
-                            <div class="mt-2 collapse" id="upload-req-{{$requirement->id}}">
-                                @include('widgets.upload-requirement')
-                            </div>
-                        </div>
+                        @switch($requirement->type)
+                            @case('form')
+                                <div class="mt-2">
+                                    <a href="{{route('requirement.form.show', [$requirement->id, $requirement->form])}}" class="btn btn-primary btn-sm">Continue to fill {{$requirement->form->name}}</a>
+                                </div>
+                            @break
+                            @case('upload')
+                                <div class="mt-2">
+                                    <button type="button" class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#upload-req-{{$requirement->id}}">Upload {{$requirement->title}}</button>
+                                    <div class="mt-2 collapse" id="upload-req-{{$requirement->id}}">
+                                        @include('widgets.upload-requirement')
+                                    </div>
+                                </div> 
+                            @break
+                            @default
+                                
+                        @endswitch
                     @endif
-                @endif
             @endauth
 
             @auth('admin')

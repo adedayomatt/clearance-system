@@ -53,7 +53,18 @@
                                         <div class="card-body">
                                             <h5>{{$requirement->title}}</h5>
                                             <p>{!!$requirement->instructions!!}</p>
-                                            <p>Requires file upload: {{$requirement->file_upload ? 'Yes' : 'No'}}</p>
+                                            <div>
+                                                @switch($requirement->type)
+                                                    @case('form')
+                                                        Type: Form, {{$requirement->form->name}} 
+                                                        @break
+                                                    @case('upload')
+                                                        Type: Document upload
+                                                        @break
+                                                    @default
+                                                        
+                                                @endswitch
+                                            </div>
                                             @php
                                                 $clearance = $requirement->student_clearance($student->id)
                                             @endphp

@@ -49,7 +49,8 @@ class RequirementController extends Controller
             'clearance_stage_id' => $stage->id,
             'title' => $request->title,
             'instructions' => $request->instructions,
-            'file_upload' => $request->has('file_upload') ? true : false
+            'form_id' => $request->requirement_type == 'form' ? $request->form : null,
+            'file_upload' => $request->requirement_type == 'upload' ? true : false,
         ]);
 
         return redirect()->route('clearance.stage.show', $stage->id)->with('success', 'New requirement added to clearance stage');
@@ -96,7 +97,12 @@ class RequirementController extends Controller
 
         $requirement->title = $request->title;
         $requirement->instructions = $request->instructions;
-        $requirement->file_upload = $request->has('file_upload') ? true :false;
+        if($request->requirement_type == 'form'){
+            $requirement->form_id = $request->form;
+        }else{
+            $requirement->form_id = null;
+        }
+        $requirement->file_upload = $request->requirement_type == 'upload' ? true : false;
         $requirement->save();
 
         return redirect()->route('clearance.stage.show', $requirement->clearance_stage->id)->with('success', $requirement->title.' requirement updated');

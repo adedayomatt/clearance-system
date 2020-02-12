@@ -28,6 +28,19 @@ class Student extends Authenticatable
         return $this->hasMany('App\Clearance');
     }
 
+    public function clearance($requirement_id){
+        return $this->clearances()->where('requirement_id', $requirement_id)->first();
+    }
+
+
+    public function form_responses(){
+        return $this->hasMany('App\FormResponse');
+    }
+
+    public function form_response($field_id){
+        return $this->form_responses()->where('form_field_id', $field_id)->first();
+    }
+
     public function fufillRequirement($requirement_id){
         return $this->clearances()->where('requirement_id', $requirement_id)->first() == null ? false : true;
     }
@@ -36,14 +49,14 @@ class Student extends Authenticatable
         $requirements = Requirement::all()->count();
         $clearances = $this->clearances()->count();
 
-        return ($clearances/$requirements)*100;
+        return ($requirements == 0 || $clearances == 0) ? 0 : ($clearances/$requirements)*100;
     }
 
     public function getClearanceApprovalProgressAttribute(){
         $requirements = Requirement::all()->count();
         $approved_clearances = $this->clearances()->where('approved_at', '!=', null)->count();
 
-        return ($approved_clearances/$requirements)*100;
+        return ($requirements == 0 || $approved_clearances == 0) ? 0 : ($approved_clearances/$requirements)*100;
     }
 
     public function getAvatarAttribute(){
