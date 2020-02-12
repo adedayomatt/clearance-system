@@ -14,7 +14,7 @@ class AdminCredentialSeeder extends Seeder
     public function run()
     {
         Admin::create([
-            'name' => 'Adedayo Matthew',
+            'name' => 'Clearance Admin',
             'email' => 'clearance@ui.com',
             'password' => Hash::make('pass'),
         ]);

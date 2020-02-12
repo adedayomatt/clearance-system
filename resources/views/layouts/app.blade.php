@@ -128,6 +128,9 @@
                         @endauth
                         @guest
                             <li class="nav-item">
+                                <a class="nav-link" href="{{ route('student.matric.check') }}">Eligibilty</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">Clearance login</a>
                             </li>
                         @endauth

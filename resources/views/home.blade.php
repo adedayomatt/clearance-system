@@ -13,6 +13,7 @@
         background-color: #fff;
         border-radius: 5px;
         padding: 5px;
+        margin-top: 20px;
         box-shadow: 0px 50px 50px rgba(0,0,0,.2);
     }
     @media (min-width: 768px){
